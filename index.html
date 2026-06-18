@@ -362,7 +362,7 @@ function buildMessage(){
   });
   if(heroLines.length===0&&practiceLines.length===0)return null;
   const lines=[];
-  lines.push(name?`**${name}**`:'');
+  lines.push(name?`# ${name}`:'');
   if(heroLines.length>0){lines.push('【得意ヒーロー】');heroLines.forEach(l=>lines.push(l));}
   if(practiceLines.length>0){
     if(heroLines.length>0)lines.push('');
