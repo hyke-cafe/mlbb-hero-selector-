@@ -6,13 +6,13 @@
 <title>MLBB 得意ヒーロー登録</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Inter:wght@400;500;600&display=swap');
-
   :root {
     --bg:#0d0f1a;--surface:#141828;--card:#1a1f35;--border:#2a3160;
     --gold:#c9a84c;--gold-dim:#7a5f26;--teal:#00d4c8;--teal-dim:#004f4b;
     --text:#e8eaf0;--muted:#6b7399;--danger:#e05555;
     --role-tank:#4a8fd4;--role-fighter:#d47c3a;--role-assassin:#9b5cd4;
-    --role-mage:#5cb8e4;--role-marksman:#e4c05c;--role-support:#5cd48a;--role-roam:#a0b4d4;
+    --role-mage:#5cb8e4;--role-marksman:#e4c05c;--role-support:#5cd48a;
+    --role-jungler:#7ab86a;--role-roam:#a0b4d4;--role-practice:#e88cc8;
   }
   *{box-sizing:border-box;margin:0;padding:0;}
   body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh;padding:24px 16px 48px;}
@@ -20,11 +20,15 @@
   header .emblem{width:56px;height:56px;margin:0 auto 12px;background:radial-gradient(circle,var(--gold) 0%,#5a3e10 100%);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px;box-shadow:0 0 24px rgba(201,168,76,0.4);}
   header h1{font-family:'Cinzel',serif;font-size:clamp(18px,4vw,26px);font-weight:900;letter-spacing:.05em;color:var(--gold);text-shadow:0 0 20px rgba(201,168,76,.5);}
   header p{margin-top:6px;font-size:13px;color:var(--muted);}
+  /* name */
   .name-section{max-width:640px;margin:0 auto 28px;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:16px 20px;}
   .name-section label{display:block;font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px;color:var(--gold);}
   .name-section input{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:14px;padding:9px 12px;outline:none;transition:border-color .2s;}
   .name-section input:focus{border-color:var(--gold);}
   .name-section input::placeholder{color:var(--muted);}
+  /* section title */
+  .section-title{max-width:900px;margin:0 auto 12px;font-family:'Cinzel',serif;font-size:13px;letter-spacing:.1em;color:var(--muted);text-transform:uppercase;padding:0 4px;}
+  /* roles grid */
   .roles-grid{max-width:900px;margin:0 auto 28px;display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;}
   .role-panel{background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden;}
   .role-header{display:flex;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid var(--border);}
@@ -43,10 +47,33 @@
   .hero-chip:hover{border-color:var(--gold-dim);color:var(--text);}
   .hero-chip.selected{background:var(--gold-dim);border-color:var(--gold);color:var(--gold);font-weight:600;}
   .hero-chip.hidden{display:none;}
+  /* 練習中 */
+  .practice-section{max-width:900px;margin:0 auto 28px;}
+  .practice-panel{background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden;}
+  .practice-header{display:flex;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid var(--border);}
+  .practice-body{padding:14px;}
+  .practice-role-label{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--role-practice);margin-bottom:10px;}
+  .practice-role-btns{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;}
+  .role-btn{font-size:12px;font-weight:700;padding:5px 14px;border-radius:20px;background:var(--surface);border:1px solid var(--border);color:var(--muted);cursor:pointer;transition:all .15s;letter-spacing:.05em;}
+  .role-btn:hover{border-color:var(--role-practice);color:var(--role-practice);}
+  .role-btn.active{background:#4a1f40;border-color:var(--role-practice);color:var(--role-practice);font-weight:700;}
+  .practice-search-label{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
+  .practice-search input{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:13px;padding:7px 11px;outline:none;transition:border-color .2s;}
+  .practice-search input:focus{border-color:var(--role-practice);}
+  .practice-search input::placeholder{color:var(--muted);}
+  .practice-results{margin-top:8px;display:flex;flex-wrap:wrap;gap:5px;max-height:120px;overflow-y:auto;}
+  .practice-results::-webkit-scrollbar{width:4px;}
+  .practice-results::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
+  .practice-selected{margin-top:10px;min-height:28px;display:flex;flex-wrap:wrap;gap:5px;align-items:center;}
+  .practice-selected-label{font-size:11px;color:var(--muted);margin-right:4px;}
+  .practice-chip{font-size:11px;padding:3px 9px;border-radius:20px;background:#4a1f40;border:1px solid var(--role-practice);color:var(--role-practice);cursor:pointer;white-space:nowrap;font-weight:600;}
+  .practice-chip:hover{opacity:.7;}
+  /* preview */
   .preview-section{max-width:640px;margin:0 auto 20px;}
   .preview-section h2{font-family:'Cinzel',serif;font-size:13px;letter-spacing:.1em;color:var(--muted);text-transform:uppercase;margin-bottom:10px;}
   .preview-box{background:#36393f;border-radius:8px;padding:14px 16px;font-family:'Inter',sans-serif;font-size:14px;line-height:1.7;white-space:pre-wrap;word-break:break-word;min-height:60px;border-left:4px solid var(--gold);color:#dcddde;}
   .preview-empty{color:var(--muted);font-style:italic;font-size:13px;}
+  /* actions */
   .actions{max-width:640px;margin:0 auto;display:flex;gap:10px;flex-wrap:wrap;}
   .btn-post{flex:1;background:linear-gradient(135deg,#b8860b,var(--gold));border:none;border-radius:8px;color:#0d0f1a;font-size:14px;font-weight:700;padding:12px 20px;cursor:pointer;letter-spacing:.05em;transition:opacity .2s,transform .1s;font-family:'Cinzel',serif;}
   .btn-post:hover{opacity:.9;transform:translateY(-1px);}
@@ -54,10 +81,12 @@
   .btn-post:disabled{opacity:.4;cursor:not-allowed;transform:none;}
   .btn-clear{background:transparent;border:1px solid var(--border);border-radius:8px;color:var(--muted);font-size:13px;padding:12px 16px;cursor:pointer;transition:border-color .2s,color .2s;}
   .btn-clear:hover{border-color:var(--danger);color:var(--danger);}
+  /* toast */
   #toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--card);border:1px solid var(--border);border-radius:8px;padding:10px 20px;font-size:13px;font-weight:600;transition:transform .3s ease;pointer-events:none;z-index:99;}
   #toast.show{transform:translateX(-50%) translateY(0);}
   #toast.success{border-color:var(--teal);color:var(--teal);}
   #toast.error{border-color:var(--danger);color:var(--danger);}
+  /* role colors */
   .c-tank{color:var(--role-tank)}.c-fighter{color:var(--role-fighter)}.c-assassin{color:var(--role-assassin)}.c-mage{color:var(--role-mage)}.c-marksman{color:var(--role-marksman)}.c-support{color:var(--role-support)}.c-jungler{color:var(--role-jungler)}.c-roam{color:var(--role-roam)}
   .d-tank{background:var(--role-tank)}.d-fighter{background:var(--role-fighter)}.d-assassin{background:var(--role-assassin)}.d-mage{background:var(--role-mage)}.d-marksman{background:var(--role-marksman)}.d-support{background:var(--role-support)}.d-jungler{background:var(--role-jungler)}.d-roam{background:var(--role-roam)}
 </style>
@@ -73,7 +102,32 @@
   <label>プレイヤー名</label>
   <input type="text" id="playerName" placeholder="例：ロロ" oninput="updatePreview()">
 </div>
+
+<div class="section-title">⚔️ 得意ヒーロー</div>
 <div class="roles-grid" id="rolesGrid"></div>
+
+<div class="section-title">🌱 練習中</div>
+<div class="practice-section">
+  <div class="practice-panel">
+    <div class="practice-header">
+      <span class="role-dot" style="background:var(--role-practice)"></span>
+      <span class="role-name" style="color:var(--role-practice)">🌱 練習中</span>
+    </div>
+    <div class="practice-body">
+      <div class="practice-role-label">ロールを選択</div>
+      <div class="practice-role-btns" id="practiceRoleBtns"></div>
+      <div class="practice-search-label">ヒーローを検索して選択</div>
+      <div class="practice-search">
+        <input type="text" id="practiceSearch" placeholder="ヒーロー名を入力…" oninput="onPracticeSearch(this.value)" autocomplete="off">
+      </div>
+      <div class="practice-results" id="practiceResults"></div>
+      <div class="practice-selected" id="practiceSelected">
+        <span class="practice-selected-label" id="practiceSelectedLabel">選択中：なし</span>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="preview-section">
   <h2>投稿プレビュー</h2>
   <div class="preview-box" id="previewBox"><span class="preview-empty">ヒーローを選ぶとプレビューが表示されます</span></div>
@@ -83,40 +137,66 @@
   <button class="btn-clear" onclick="clearAll()">クリア</button>
 </div>
 <div id="toast"></div>
+
 <script>
-// ── ヒーローデータ（日本語名 / mljpwiki.com 確認済み）──
+// ── ヒーローデータ ──
 const ROLES = [
-  {
-    id:"tank", label:"Tank", emoji:"🛡️",
-    heroes:["アテラス","アリス","イーディス","ウラノス","エスメラルダ","カーミラ","ガイ","ガトートカチャ","ガレック","クッフラー","グルー","ジェイソン","チップ","ティグラル","バラッツ","バルモンド","ヒルダ","ヒロス","フランコ","フレッドリン","ベレリック","ミノタウル","ロイン","玄覇"]},
-  {
-    id:"fighter", label:"Fighter", emoji:"⚔️",
-    heroes:["アウルス","アルカード","アルゴス","アルダス","アルファ","アーロット","イーディス","ウラノス","エスメラルダ","エックス","カレード","グィネヴィア","ザビエル","シュウ","シルバンナ","シーシー","ジュリアン","ソラ","ゾン","ディアス","ディスラー","デームス","バターン","バルモンド","パキート","ヒルダ","フォヴィウス","フレイヤ","フレッドリン","ベイン","ベラ","マイシータール","マーシャ","マーティス","メタルヘッド","ラプラプ","ルビー","ルーカス","レオモルド","ロジャー","子龍","悟空"]},
-  {
-    id:"assassin", label:"Assassin", emoji:"🗡️",
-    heroes:["アモン","アルカード","アーロット","イクシア","イスンシン","カティタ","カリナ","ゴセン","ジュリアン","ジョイ","セイバー","セリナ","ディアス","ナタリア","ノーラン","ハカート","ハーリー","バラッツ","パキート","ヒララ","ファニー","ベラ","マチルダ","ランスロット","リン","ローイー","半蔵","子龍","寅（イン）","粛遊","隼"]},
-  {
-    id:"mage", label:"Mage", emoji:"🔮",
-    heroes:["アリス","アンジェラ","イクシア","イヴ","エウドラ","エスメラルダ","オデット","オーロラ","カグラ","カティタ","カーミラ","グールド","ゴセン","サイクロプス","サナ","ザスク","ザビエル","シルバンナ","ジミー","ジョイ","セシリオン","セリナ","ディガー","ナナ","ノヴァリア","ハリス","ハーリー","バレンティナ","ファラミス","ファーサ","ベイン","マチルダ","ラファエル","リリア","ローイー","ヴァリル","ヴェル","嫦娥","星夢","燭心"]},
-  {
-    id:"marksman", label:"Marksman", emoji:"🏹",
-    heroes:["イクシア","イスンシン","イーディス","エレシル","キャリー","クラウド","クリント","グレンジャー","ジミー","ニュート","ハナビ","ビアトリクス","ブルーノ","ブロディ","ボボル&クバ","マイヤ","メリッサ","モスコブ","ライラ","ラズリー","ロジャー","琥珀"]},
-  {
-    id:"support", label:"Support", emoji:"💚",
-    heroes:["アンジェラ","エスタス","カチャ","カーミラ","チップ","ディガー","ナナ","ファラミス","フローラ","マチルダ","ラファエル","ロイン"]},
-  {
-    id:"jungler", label:"Jungler", emoji:"🌿", searchAll:true,
-    heroes:["アウルス","アモン","アルカード","アルファ","イスンシン","エスメラルダ","エックス","キャリー","グィネヴィア","ジュリアン","ジョイ","セイバー","ディアス","ナタリア","ハーリー","バラッツ","バルモンド","パキート","ヒロス","ファニー","フレッドリン","ブルーノ","ベイン","ベラ","ボボル&クバ","ランスロット","ルーカス","ロジャー","半蔵","寅（イン）","悟空","玄覇","粛遊","隼"]},
-  {
-    id:"roam", label:"Roam", emoji:"🌀", searchAll:true,
-    heroes:["アテラス","イーディス","カティタ","クッフラー","グィネヴィア","シュウ","シルバンナ","ジェイソン","ティグラル","ディガー","ナタリア","ヒロス","フォヴィウス","フランコ","ベレリック","ボボル&クバ","マチルダ","ミノタウル","メタルヘッド","ラファエル","ロイン","玄覇"]}
+  {id:"tank",label:"Tank",emoji:"🛡️",
+   heroes:["アテラス","アリス","イーディス","ウラノス","エスメラルダ","カーミラ","ガイ","ガトートカチャ","ガレック","クッフラー","グルー","ジェイソン","チップ","ティグラル","バラッツ","バルモンド","ヒルダ","ヒロス","フランコ","フレッドリン","ベレリック","ミノタウル","ロイン","玄覇"]},
+  {id:"fighter",label:"Fighter",emoji:"⚔️",
+   heroes:["アウルス","アルカード","アルゴス","アルダス","アルファ","アーロット","イーディス","ウラノス","エスメラルダ","エックス","カレード","グィネヴィア","ザビエル","シュウ","シルバンナ","シーシー","ジュリアン","ソラ","ゾン","ディアス","ディスラー","デームス","バターン","バルモンド","パキート","ヒルダ","フォヴィウス","フレイヤ","フレッドリン","ベイン","ベラ","マイシータール","マーシャ","マーティス","メタルヘッド","ラプラプ","ルビー","ルーカス","レオモルド","ロジャー","子龍","悟空"]},
+  {id:"assassin",label:"Assassin",emoji:"🗡️",
+   heroes:["アモン","アルカード","アーロット","イスンシン","カティタ","カリナ","ゴセン","ジュリアン","ジョイ","セイバー","セリナ","ディアス","ナタリア","ノーラン","ハカート","ハーリー","バラッツ","パキート","ヒララ","ファニー","ベラ","マチルダ","ランスロット","リン","ローイー","半蔵","子龍","寅（イン）","粛遊","隼"]},
+  {id:"mage",label:"Mage",emoji:"🔮",
+   heroes:["アリス","アンジェラ","イヴ","エウドラ","エスメラルダ","オデット","オーロラ","カグラ","カティタ","カーミラ","グールド","ゴセン","サイクロプス","サナ","ザスク","ザビエル","シルバンナ","ジミー","ジョイ","セシリオン","セリナ","ディガー","ナナ","ノヴァリア","ハリス","ハーリー","バレンティナ","ファラミス","ファーサ","ベイン","マチルダ","ラファエル","リリア","ローイー","ヴァリル","ヴェル","嫦娥","星夢","燭心"]},
+  {id:"marksman",label:"Marksman",emoji:"🏹",
+   heroes:["イスンシン","イーディス","エレシル","キャリー","クラウド","クリント","グレンジャー","ジミー","ニュート","ハナビ","ビアトリクス","ブルーノ","ブロディ","ボボル&クバ","マイヤ","メリッサ","モスコブ","ライラ","ラズリー","ロジャー","琥珀"]},
+  {id:"support",label:"Support",emoji:"💚",
+   heroes:["アンジェラ","エスタス","カチャ","カーミラ","チップ","ディガー","ナナ","ファラミス","フローラ","マチルダ","ラファエル","ロイン"]},
+  {id:"jungler",label:"Jungler",emoji:"🌿",searchAll:true,
+   heroes:["アウルス","アモン","アルカード","アルファ","イスンシン","エスメラルダ","エックス","キャリー","グィネヴィア","ジュリアン","ジョイ","セイバー","ディアス","ナタリア","ハーリー","バラッツ","バルモンド","パキート","ヒロス","ファニー","フレッドリン","ブルーノ","ベイン","ベラ","ボボル&クバ","ランスロット","ルーカス","ロジャー","半蔵","寅（イン）","悟空","玄覇","粛遊","隼"]},
+  {id:"roam",label:"Roam",emoji:"🌀",searchAll:true,
+   heroes:["アテラス","イーディス","カティタ","クッフラー","グィネヴィア","シュウ","シルバンナ","ジェイソン","ティグラル","ディガー","ナタリア","ヒロス","フォヴィウス","フランコ","ベレリック","ボボル&クバ","マチルダ","ミノタウル","メタルヘッド","ラファエル","ロイン","玄覇"]}
 ];
-const ALL_HEROES = ["アウルス","アテラス","アモン","アリス","アルカード","アルゴス","アルダス","アルファ","アンジェラ","アーロット","イクシア","イスンシン","イヴ","イーディス","ウラノス","エウドラ","エスタス","エスメラルダ","エックス","エレシル","オデット","オーロラ","カグラ","カチャ","カティタ","カリナ","カレード","カーミラ","ガイ","ガトートカチャ","ガレック","キャリー","クッフラー","クラウド","クリント","グィネヴィア","グルー","グレンジャー","グールド","ゴセン","サイクロプス","サナ","ザスク","ザビエル","シュウ","シルバンナ","シーシー","ジェイソン","ジミー","ジュリアン","ジョイ","セイバー","セシリオン","セリナ","ソラ","ゾン","チップ","ティグラル","ディアス","ディガー","ディスラー","デームス","ナタリア","ナナ","ニュート","ノヴァリア","ノーラン","ハカート","ハナビ","ハリス","ハーリー","バターン","バラッツ","バルモンド","バレンティナ","パキート","ヒララ","ヒルダ","ヒロス","ビアトリクス","ファニー","ファラミス","ファーサ","フォヴィウス","フランコ","フレイヤ","フレッドリン","フローラ","ブルーノ","ブロディ","ベイン","ベラ","ベレリック","ボボル&クバ","マイシータール","マイヤ","マチルダ","マーシャ","マーティス","ミノタウル","メタルヘッド","メリッサ","モスコブ","ライラ","ラズリー","ラファエル","ラプラプ","ランスロット","リリア","リン","ルビー","ルーカス","レオモルド","ロイン","ロジャー","ローイー","ヴァリル","ヴェル","半蔵","嫦娥","子龍","寅（イン）","悟空","星夢","燭心","玄覇","琥珀","粛遊","隼"];
+
+const ALL_HEROES = ["アウルス","アテラス","アモン","アリス","アルカード","アルゴス","アルダス","アルファ","アンジェラ","アーロット","イスンシン","イヴ","イーディス","ウラノス","エウドラ","エスタス","エスメラルダ","エックス","エレシル","オデット","オーロラ","カグラ","カチャ","カティタ","カリナ","カレード","カーミラ","ガイ","ガトートカチャ","ガレック","キャリー","クッフラー","クラウド","クリント","グィネヴィア","グルー","グレンジャー","グールド","ゴセン","サイクロプス","サナ","ザスク","ザビエル","シュウ","シルバンナ","シーシー","ジェイソン","ジミー","ジュリアン","ジョイ","セイバー","セシリオン","セリナ","ソラ","ゾン","チップ","ティグラル","ディアス","ディガー","ディスラー","デームス","ナタリア","ナナ","ニュート","ノヴァリア","ノーラン","ハカート","ハナビ","ハリス","ハーリー","バターン","バラッツ","バルモンド","バレンティナ","パキート","ヒララ","ヒルダ","ヒロス","ビアトリクス","ファニー","ファラミス","ファーサ","フォヴィウス","フランコ","フレイヤ","フレッドリン","フローラ","ブルーノ","ブロディ","ベイン","ベラ","ベレリック","ボボル&クバ","マイシータール","マイヤ","マチルダ","マーシャ","マーティス","ミノタウル","メタルヘッド","メリッサ","モスコブ","ライラ","ラズリー","ラファエル","ラプラプ","ランスロット","リリア","リン","ルビー","ルーカス","レオモルド","ロイン","ロジャー","ローイー","ヴァリル","ヴェル","半蔵","嫦娥","子龍","寅（イン）","悟空","星夢","燭心","玄覇","琥珀","粛遊","隼","イクシア"];
 
 ROLES.forEach(r=>{r.heroes=[...new Set(r.heroes)].sort();});
 const selected={};
 ROLES.forEach(r=>{selected[r.id]=new Set();});
 
+// ── 練習中データ ──
+const PRACTICE_ROLES=[
+  {id:"exp",label:"EXP"},
+  {id:"mid",label:"MID"},
+  {id:"jg",label:"JG"},
+  {id:"roam",label:"ROAM"},
+  {id:"gold",label:"GOLD"}
+];
+let practiceRole=null;
+let practiceHero=null;
+
+// ── YOMI ──
+const YOMI={
+  "子龍":"しりゅう","隼":"はやぶさ","悟空":"ごくう",
+  "嫦娥":"じょうが","星夢":"せいむ","半蔵":"はんぞう",
+  "玄覇":"げんは","琥珀":"こはく","粛遊":"すよう","燭心":"しょくしん",
+  "寅（イン）":"とらいん","ボボル&クバ":"ぼぼるくば"
+};
+
+function toHira(str){return str.replace(/[\u30A1-\u30F6]/g,c=>String.fromCharCode(c.charCodeAt(0)-0x60));}
+function toKata(str){return str.replace(/[\u3041-\u3096]/g,c=>String.fromCharCode(c.charCodeAt(0)+0x60));}
+
+function matchHero(hero,q){
+  const qHira=toHira(q);
+  const qKata=toKata(qHira);
+  const name=hero.toLowerCase();
+  const nameHira=toHira(name);
+  const yomi=YOMI[hero]||"";
+  return name.includes(q)||nameHira.includes(qHira)||toKata(nameHira).includes(qKata)||yomi.includes(qHira)||toKata(yomi).includes(qKata);
+}
+
+// ── 得意ヒーロー ──
 function buildRoles(){
   const grid=document.getElementById('rolesGrid');
   ROLES.forEach(role=>{
@@ -129,70 +209,58 @@ function buildRoles(){
         <span class="role-count" id="count-${role.id}">0 / ${role.heroes.length}</span>
       </div>
       <div class="role-search">
-        <input type="text" placeholder="ヒーローを検索…" oninput="if(!this.value)clearSearchResults('${role.id}');filterHeroes('${role.id}',this.value)">
+        <input type="text" id="search-${role.id}" placeholder="ヒーローを検索…" oninput="onRoleSearch('${role.id}',this.value)">
       </div>
       <div class="hero-list" id="list-${role.id}"></div>`;
     grid.appendChild(panel);
     const list=panel.querySelector(`#list-${role.id}`);
     role.heroes.forEach(hero=>{
-      const chip=document.createElement('span');
-      chip.className='hero-chip';
-      chip.dataset.hero=hero;
-      chip.dataset.role=role.id;
-      chip.textContent=hero;
-      chip.onclick=()=>toggleHero(role.id,hero,chip);
+      const chip=makeChip(hero,role.id,false);
       list.appendChild(chip);
     });
   });
 }
 
-// 漢字ヒーローの読みテーブル（ひらがな）
-const YOMI={
-  "子龍":"しりゅう","隼":"はやぶさ","悟空":"ごくう",
-  "嫦娥":"じょうが","星夢":"せいむ","半蔵":"はんぞう",
-  "玄覇":"げんは","琥珀":"こはく","粛遊":"すよう","燭心":"しょくしん",
-  "寅（イン）":"とらいん","ボボル&クバ":"ぼぼるくば"
-};
+function makeChip(hero,roleId,isExtra){
+  const chip=document.createElement('span');
+  chip.className='hero-chip'+(isExtra?' extra-chip':'');
+  chip.dataset.hero=hero;
+  chip.dataset.role=roleId;
+  chip.textContent=hero;
+  chip.onclick=()=>{
+    toggleHero(roleId,hero,chip);
+    // 選択後に検索ボックスをクリア
+    const searchInput=document.getElementById(`search-${roleId}`);
+    if(searchInput && searchInput.value){
+      searchInput.value='';
+      clearSearchResults(roleId);
+      filterHeroes(roleId,'');
+    }
+  };
+  return chip;
+}
 
-// カタカナ→ひらがな
-function toHira(str){return str.replace(/[\u30A1-\u30F6]/g,c=>String.fromCharCode(c.charCodeAt(0)-0x60));}
-// ひらがな→カタカナ
-function toKata(str){return str.replace(/[\u3041-\u3096]/g,c=>String.fromCharCode(c.charCodeAt(0)+0x60));}
-
-function matchHero(hero, q){
-  const qHira=toHira(q);
-  const qKata=toKata(qHira);
-  const name=hero.toLowerCase();
-  const nameHira=toHira(name);
-  const yomi=YOMI[hero]||"";
-  return name.includes(q)||nameHira.includes(qHira)||toKata(nameHira).includes(qKata)||yomi.includes(qHira)||toKata(yomi).includes(qKata);
+function onRoleSearch(roleId,value){
+  if(!value) clearSearchResults(roleId);
+  filterHeroes(roleId,value);
 }
 
 function filterHeroes(roleId,query){
   const role=ROLES.find(r=>r.id===roleId);
   const list=document.getElementById(`list-${roleId}`);
   if(!query){
-    // searchAllロールは全チップ表示（表示中のチップのみ非表示解除）
     list.querySelectorAll('.hero-chip').forEach(c=>c.classList.remove('hidden'));
     return;
   }
   const q=query.toLowerCase();
-  if(role && role.searchAll){
-    // 既存チップを検索でフィルタ＋マッチした全ヒーローを動的追加
+  if(role&&role.searchAll){
     const shown=new Set([...list.querySelectorAll('.hero-chip')].map(c=>c.dataset.hero));
-    // まず既存チップを隠す/表示
     list.querySelectorAll('.hero-chip').forEach(chip=>{
       chip.classList.toggle('hidden',!matchHero(chip.dataset.hero,q));
     });
-    // 全ヒーローからマッチするものでまだチップにないものを追加
     ALL_HEROES.forEach(hero=>{
       if(matchHero(hero,q)&&!shown.has(hero)){
-        const chip=document.createElement('span');
-        chip.className='hero-chip extra-chip';
-        chip.dataset.hero=hero;
-        chip.dataset.role=roleId;
-        chip.textContent=hero;
-        chip.onclick=()=>toggleHero(roleId,hero,chip);
+        const chip=makeChip(hero,roleId,true);
         list.appendChild(chip);
         shown.add(hero);
       }
@@ -205,7 +273,6 @@ function filterHeroes(roleId,query){
 }
 
 function clearSearchResults(roleId){
-  // extra-chip（検索で追加された一時チップ）を削除
   document.querySelectorAll(`#list-${roleId} .extra-chip`).forEach(c=>c.remove());
 }
 
@@ -217,20 +284,106 @@ function toggleHero(roleId,hero,chip){
   updatePreview();
 }
 
+// ── 練習中 ──
+function buildPractice(){
+  const btns=document.getElementById('practiceRoleBtns');
+  PRACTICE_ROLES.forEach(r=>{
+    const btn=document.createElement('button');
+    btn.className='role-btn';
+    btn.textContent=r.label;
+    btn.dataset.id=r.id;
+    btn.onclick=()=>selectPracticeRole(r.id,btn);
+    btns.appendChild(btn);
+  });
+}
+
+function selectPracticeRole(id,btn){
+  practiceRole=id;
+  document.querySelectorAll('.role-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  updatePreview();
+}
+
+function onPracticeSearch(value){
+  const results=document.getElementById('practiceResults');
+  results.innerHTML='';
+  if(!value.trim()) return;
+  const q=value.toLowerCase();
+  ALL_HEROES.filter(h=>matchHero(h,q)).slice(0,30).forEach(hero=>{
+    const chip=document.createElement('span');
+    chip.className='hero-chip';
+    chip.textContent=hero;
+    chip.onclick=()=>{
+      practiceHero=hero;
+      document.getElementById('practiceSearch').value='';
+      results.innerHTML='';
+      renderPracticeSelected();
+      updatePreview();
+    };
+    results.appendChild(chip);
+  });
+}
+
+function renderPracticeSelected(){
+  const container=document.getElementById('practiceSelected');
+  container.innerHTML='';
+  if(practiceHero){
+    const label=document.createElement('span');
+    label.className='practice-selected-label';
+    label.textContent='選択中：';
+    container.appendChild(label);
+    const chip=document.createElement('span');
+    chip.className='practice-chip';
+    chip.textContent=practiceHero;
+    chip.title='クリックで解除';
+    chip.onclick=()=>{practiceHero=null;renderPracticeSelected();updatePreview();};
+    container.appendChild(chip);
+  } else {
+    const label=document.createElement('span');
+    label.className='practice-selected-label';
+    label.textContent='選択中：なし';
+    container.appendChild(label);
+  }
+}
+
+// ── プレビュー＆投稿 ──
 const ROLE_LABELS={tank:"🛡️ Tank",fighter:"⚔️ Fighter",assassin:"🗡️ Assassin",mage:"🔮 Mage",marksman:"🏹 Marksman",support:"💚 Support",jungler:"🌿 Jungler",roam:"🌀 Roam"};
 
 function buildMessage(){
   const name=document.getElementById('playerName').value.trim();
   const lines=[];
-  lines.push(name?`**${name}** の得意ヒーロー\n`:`得意ヒーロー\n`);
   let hasAny=false;
+
+  // 得意ヒーロー
+  const heroLines=[];
   ROLES.forEach(role=>{
     if(selected[role.id].size>0){
-      lines.push(`${ROLE_LABELS[role.id]}: ${[...selected[role.id]].join(', ')}`);
+      heroLines.push(`${ROLE_LABELS[role.id]}: ${[...selected[role.id]].join(', ')}`);
       hasAny=true;
     }
   });
-  return hasAny?lines.join('\n'):null;
+
+  // 練習中
+  let practiceLines=[];
+  if(practiceRole&&practiceHero){
+    const rl=PRACTICE_ROLES.find(r=>r.id===practiceRole);
+    practiceLines.push(`🌱 練習中 [${rl.label}]: ${practiceHero}`);
+    hasAny=true;
+  }
+
+  if(!hasAny) return null;
+
+  lines.push(name?`**${name}**\n`:`\n`);
+  if(heroLines.length>0){
+    lines.push('【得意ヒーロー】');
+    heroLines.forEach(l=>lines.push(l));
+  }
+  if(practiceLines.length>0){
+    if(heroLines.length>0) lines.push('');
+    lines.push('【練習中】');
+    practiceLines.forEach(l=>lines.push(l));
+  }
+  return lines.join('\n');
 }
 
 function updatePreview(){
@@ -241,8 +394,6 @@ function updatePreview(){
   document.getElementById('postBtn').disabled=!msg;
 }
 
-
-
 async function postToDiscord(){
   const url='https://discord.com/api/webhooks/1516993952736215202/XkchAQu9Clt0bT4GgiYDlltqnEacdlh2ELrJW2FLI0WrxC-lMv6H9LkibJtyOVhDP3Nc';
   const msg=buildMessage();
@@ -252,8 +403,8 @@ async function postToDiscord(){
   try{
     const res=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({content:msg})});
     if(res.ok||res.status===204){showToast('✅ Discordに投稿しました！','success');}
-    else{showToast(`エラー: ${res.status} — URLを確認してください`,'error');}
-  }catch(e){showToast('通信エラー。Webhook URLを確認してください','error');}
+    else{showToast(`エラー: ${res.status}`,'error');}
+  }catch(e){showToast('通信エラー','error');}
   finally{btn.disabled=false;btn.textContent='⚔️ Discordに投稿';updatePreview();}
 }
 
@@ -261,9 +412,17 @@ function clearAll(){
   ROLES.forEach(role=>{
     selected[role.id].clear();
     document.querySelectorAll(`#list-${role.id} .hero-chip`).forEach(c=>c.classList.remove('selected'));
-    const r=ROLES.find(x=>x.id===role.id);
-    document.getElementById(`count-${role.id}`).textContent=`0 / ${r.heroes.length}`;
+    document.getElementById(`count-${role.id}`).textContent=`0 / ${role.heroes.length}`;
+    const si=document.getElementById(`search-${role.id}`);
+    if(si) si.value='';
+    clearSearchResults(role.id);
   });
+  practiceRole=null;
+  practiceHero=null;
+  document.querySelectorAll('.role-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('practiceSearch').value='';
+  document.getElementById('practiceResults').innerHTML='';
+  renderPracticeSelected();
   document.getElementById('playerName').value='';
   updatePreview();
 }
@@ -274,8 +433,10 @@ function showToast(msg,type='success'){
   setTimeout(()=>{t.className=type;},3000);
 }
 
-buildRoles();updatePreview();
-
+buildRoles();
+buildPractice();
+renderPracticeSelected();
+updatePreview();
 </script>
 </body>
 </html>
