@@ -10,9 +10,8 @@
     --bg:#0d0f1a;--surface:#141828;--card:#1a1f35;--border:#2a3160;
     --gold:#c9a84c;--gold-dim:#7a5f26;--teal:#00d4c8;--teal-dim:#004f4b;
     --text:#e8eaf0;--muted:#6b7399;--danger:#e05555;
-    --role-tank:#4a8fd4;--role-fighter:#d47c3a;--role-assassin:#9b5cd4;
-    --role-mage:#5cb8e4;--role-marksman:#e4c05c;--role-support:#5cd48a;
-    --role-jungler:#7ab86a;--role-roam:#a0b4d4;--role-practice:#e88cc8;
+    --lane-roam:#a0b4d4;--lane-exp:#d47c3a;--lane-jg:#7ab86a;
+    --lane-mid:#5cb8e4;--lane-gold:#e4c05c;--lane-practice:#e88cc8;
   }
   *{box-sizing:border-box;margin:0;padding:0;}
   body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh;padding:24px 16px 48px;}
@@ -50,20 +49,18 @@
   .practice-header{display:flex;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid var(--border);}
   .practice-body{padding:14px;display:grid;grid-template-columns:1fr 1fr;gap:16px;}
   @media(max-width:600px){.practice-body{grid-template-columns:1fr;}}
-  .practice-col-label{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--role-practice);margin-bottom:8px;}
-  /* ロールボタン群 */
+  .practice-col-label{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--lane-practice);margin-bottom:8px;}
   .practice-role-list{display:flex;flex-direction:column;gap:6px;}
   .practice-role-row{display:flex;align-items:center;gap:6px;}
-  .role-btn{font-size:12px;font-weight:700;padding:5px 14px;border-radius:20px;background:var(--surface);border:1px solid var(--border);color:var(--muted);cursor:pointer;transition:all .15s;letter-spacing:.05em;min-width:60px;text-align:center;}
-  .role-btn:hover{border-color:var(--role-practice);color:var(--role-practice);}
-  .role-btn.active{background:#4a1f40;border-color:var(--role-practice);color:var(--role-practice);}
+  .p-role-btn{font-size:12px;font-weight:700;padding:5px 14px;border-radius:20px;background:var(--surface);border:1px solid var(--border);color:var(--muted);cursor:pointer;transition:all .15s;letter-spacing:.05em;min-width:60px;text-align:center;}
+  .p-role-btn:hover{border-color:var(--lane-practice);color:var(--lane-practice);}
+  .p-role-btn.active{background:#4a1f40;border-color:var(--lane-practice);color:var(--lane-practice);}
   .role-hero-chips{display:flex;flex-wrap:wrap;gap:4px;flex:1;}
-  .practice-chip{font-size:11px;padding:2px 8px;border-radius:20px;background:#4a1f40;border:1px solid var(--role-practice);color:var(--role-practice);cursor:pointer;white-space:nowrap;font-weight:600;}
+  .practice-chip{font-size:11px;padding:2px 8px;border-radius:20px;background:#4a1f40;border:1px solid var(--lane-practice);color:var(--lane-practice);cursor:pointer;white-space:nowrap;font-weight:600;}
   .practice-chip:hover{opacity:.7;}
-  /* 検索 */
   .practice-search-wrap{display:flex;flex-direction:column;}
   .practice-search input{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:13px;padding:7px 11px;outline:none;transition:border-color .2s;margin-bottom:8px;}
-  .practice-search input:focus{border-color:var(--role-practice);}
+  .practice-search input:focus{border-color:var(--lane-practice);}
   .practice-search input::placeholder{color:var(--muted);}
   .practice-results{display:flex;flex-wrap:wrap;gap:5px;max-height:160px;overflow-y:auto;}
   .practice-results::-webkit-scrollbar{width:4px;}
@@ -84,15 +81,15 @@
   #toast.show{transform:translateX(-50%) translateY(0);}
   #toast.success{border-color:var(--teal);color:var(--teal);}
   #toast.error{border-color:var(--danger);color:var(--danger);}
-  .c-tank{color:var(--role-tank)}.c-fighter{color:var(--role-fighter)}.c-assassin{color:var(--role-assassin)}.c-mage{color:var(--role-mage)}.c-marksman{color:var(--role-marksman)}.c-support{color:var(--role-support)}.c-jungler{color:var(--role-jungler)}.c-roam{color:var(--role-roam)}
-  .d-tank{background:var(--role-tank)}.d-fighter{background:var(--role-fighter)}.d-assassin{background:var(--role-assassin)}.d-mage{background:var(--role-mage)}.d-marksman{background:var(--role-marksman)}.d-support{background:var(--role-support)}.d-jungler{background:var(--role-jungler)}.d-roam{background:var(--role-roam)}
+  .c-roam{color:var(--lane-roam)}.c-exp{color:var(--lane-exp)}.c-jg{color:var(--lane-jg)}.c-mid{color:var(--lane-mid)}.c-gold{color:var(--lane-gold)}
+  .d-roam{background:var(--lane-roam)}.d-exp{background:var(--lane-exp)}.d-jg{background:var(--lane-jg)}.d-mid{background:var(--lane-mid)}.d-gold{background:var(--lane-gold)}
 </style>
 </head>
 <body>
 <header>
   <div class="emblem">⚔️</div>
   <h1>HERO REGISTRY</h1>
-  <p>得意ヒーローをロール別に選んでDiscordに投稿する</p>
+  <p>得意ヒーローをレーン別に選んでDiscordに投稿する</p>
 </header>
 
 <div class="name-section">
@@ -107,18 +104,16 @@
 <div class="practice-section">
   <div class="practice-panel">
     <div class="practice-header">
-      <span class="role-dot" style="background:var(--role-practice)"></span>
-      <span class="role-name" style="color:var(--role-practice)">🌱 練習中</span>
+      <span class="role-dot" style="background:var(--lane-practice)"></span>
+      <span class="role-name" style="color:var(--lane-practice)">🌱 練習中</span>
     </div>
     <div class="practice-body">
-      <!-- 左：ロール別ヒーロー一覧 -->
       <div>
         <div class="practice-col-label">登録済み</div>
         <div class="practice-role-list" id="practiceRoleList"></div>
       </div>
-      <!-- 右：検索 -->
       <div class="practice-search-wrap">
-        <div class="practice-col-label">ロールを選んでヒーローを検索</div>
+        <div class="practice-col-label">レーンを選んでヒーローを検索</div>
         <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;" id="practiceRoleBtns"></div>
         <div class="practice-search">
           <input type="text" id="practiceSearch" placeholder="ヒーロー名を入力…" oninput="onPracticeSearch(this.value)" autocomplete="off">
@@ -140,44 +135,34 @@
 <div id="toast"></div>
 
 <script>
-const ROLES=[
-  {id:"tank",label:"Tank",emoji:"🛡️",
-   heroes:["アテラス","アリス","イーディス","ウラノス","エスメラルダ","カーミラ","ガイ","ガトートカチャ","ガレック","クッフラー","グルー","ジェイソン","チップ","ティグラル","バラッツ","バルモンド","ヒルダ","ヒロス","フランコ","フレッドリン","ベレリック","ミノタウル","ロイン","玄覇"]},
-  {id:"fighter",label:"Fighter",emoji:"⚔️",
-   heroes:["アウルス","アルカード","アルゴス","アルダス","アルファ","アーロット","イーディス","ウラノス","エスメラルダ","エックス","カレード","グィネヴィア","シュウ","シルバンナ","シーシー","ジュリアン","ソラ","ゾン","ディアス","ディスラー","デームス","バターン","バルモンド","パキート","ヒルダ","フォヴィウス","フレイヤ","フレッドリン","ベイン","ベラ","マイシータール","マーシャ","マーティス","メタルヘッド","ラプラプ","ルビー","ルーカス","レオモルド","ロジャー","子龍","悟空"]},
-  {id:"assassin",label:"Assassin",emoji:"🗡️",
-   heroes:["アモン","アルカード","アーロット","イスンシン","カティタ","カリナ","ゴセン","ジュリアン","ジョイ","セイバー","セリナ","ディアス","ナタリア","ノーラン","ハカート","ハーリー","バラッツ","パキート","ヒララ","ファニー","ベラ","マチルダ","ランスロット","リン","ローイー","半蔵","子龍","寅（イン）","粛遊","隼"]},
-  {id:"mage",label:"Mage",emoji:"🔮",
-   heroes:["アリス","アンジェラ","イヴ","エウドラ","エスメラルダ","オデット","オーロラ","カグラ","カティタ","カーミラ","グールド","ゴセン","サイクロプス","サナ","ザスク","ザビエル","シルバンナ","ジミー","ジョイ","セシリオン","セリナ","ディガー","ナナ","ノヴァリア","ハリス","ハーリー","バレンティナ","ファラミス","ファーサ","ベイン","マチルダ","ラファエル","リリア","ローイー","ヴァリル","ヴェル","嫦娥","星夢","燭心"]},
-  {id:"marksman",label:"Marksman",emoji:"🏹",
-   heroes:["イスンシン","イーディス","エレシル","キャリー","クラウド","クリント","グレンジャー","ジミー","ニュート","ハナビ","ビアトリクス","ブルーノ","ブロディ","ボボル&クバ","マイヤ","メリッサ","モスコブ","ライラ","ラズリー","ロジャー","琥珀"]},
-  {id:"support",label:"Support",emoji:"💚",
-   heroes:["アンジェラ","エスタス","カチャ","カーミラ","チップ","ディガー","ナナ","ファラミス","フローラ","マチルダ","ラファエル","ロイン"]},
-  {id:"jungler",label:"Jungler",emoji:"🌿",searchAll:true,
-   heroes:["アウルス","アモン","アルカード","アルファ","イスンシン","エスメラルダ","エックス","キャリー","グィネヴィア","ジュリアン","ジョイ","セイバー","ディアス","ナタリア","ハーリー","バラッツ","バルモンド","パキート","ヒロス","ファニー","フレッドリン","ブルーノ","ベイン","ベラ","ボボル&クバ","ランスロット","ルーカス","ロジャー","半蔵","寅（イン）","悟空","玄覇","粛遊","隼"]},
-  {id:"roam",label:"Roam",emoji:"🌀",searchAll:true,
-   heroes:["アテラス","イーディス","カティタ","クッフラー","グィネヴィア","シュウ","シルバンナ","ジェイソン","ティグラル","ディガー","ナタリア","ヒロス","フォヴィウス","フランコ","ベレリック","ボボル&クバ","マチルダ","ミノタウル","メタルヘッド","ラファエル","ロイン","玄覇"]}
+const LANES=[
+  {id:"roam",label:"Roam",emoji:"🌀",
+   heroes:["ハカート","セリナ","カティタ","マチルダ","ヒルダ","フォヴィウス","シルバンナ","アテラス","カーミラ","ガイ","ガトートカチャ","ガレック","クッフラー","グルー","ジェイソン","チップ","ティグラル","ヒロス","フランコ","ベレリック","ミノタウル","ロイン","玄覇","カチャ","マイシータール","アンジェラ","ラファエル","エスタス","ディガー","ファラミス"]},
+  {id:"exp",label:"Exp",emoji:"⚔️",
+   heroes:["アルカード","アーロット","ジュリアン","ディアス","バラッツ","パキート","ベラ","子龍","寅（イン）","粛遊","ゴセン","アウルス","アルゴス","アルダス","アルファ","イーディス","ウラノス","エスメラルダ","エックス","カレード","グィネヴィア","シュウ","シルバンナ","シーシー","ソラ","ゾン","ディスラー","デームス","バターン","バルモンド","ヒルダ","フォヴィウス","フレイヤ","フレッドリン","ベイン","マーシャ","マーティス","メタルヘッド","ラプラプ","ルビー","ルーカス","レオモルド","悟空","ボボル&クバ","マイシータール","カチャ"]},
+  {id:"jg",label:"JG",emoji:"🌿",
+   heroes:["アモン","アルカード","アーロット","イスンシン","カリナ","ゴセン","ジュリアン","ジョイ","セイバー","セリナ","ディアス","ナタリア","ノーラン","ハカート","ハーリー","バラッツ","パキート","ヒララ","ファニー","ベラ","マチルダ","ランスロット","リン","ローイー","半蔵","子龍","寅（イン）","粛遊","隼","バルモンド","エスメラルダ","ベイン","サイクロプス","ニュート","ロジャー"]},
+  {id:"mid",label:"Mid",emoji:"🔮",
+   heroes:["カティタ","ゴセン","ジョイ","セリナ","ハーリー","ローイー","ベイン","ディガー","ナナ","ファラミス","アリス","イヴ","エウドラ","オデット","オーロラ","カグラ","グールド","サイクロプス","サナ","ザスク","ザビエル","ジミー","セシリオン","ノヴァリア","ハリス","バレンティナ","ファーサ","リリア","ヴァリル","ヴェル","嫦娥","星夢","燭心","則天"]},
+  {id:"gold",label:"Gold",emoji:"🏹",
+   heroes:["イスンシン","イーディス","ボボル&クバ","ジミー","ハリス","エレシル","キャリー","クラウド","クリント","グレンジャー","ニュート","ハナビ","ビアトリクス","ブルーノ","ブロディ","マイヤ","メリッサ","モスコブ","ライラ","ラズリー","ロジャー","琥珀"]}
 ];
 
-const ALL_HEROES=["アウルス","アテラス","アモン","アリス","アルカード","アルゴス","アルダス","アルファ","アンジェラ","アーロット","イスンシン","イヴ","イーディス","ウラノス","エウドラ","エスタス","エスメラルダ","エックス","エレシル","オデット","オーロラ","カグラ","カチャ","カティタ","カリナ","カレード","カーミラ","ガイ","ガトートカチャ","ガレック","キャリー","クッフラー","クラウド","クリント","グィネヴィア","グルー","グレンジャー","グールド","ゴセン","サイクロプス","サナ","ザスク","ザビエル","シュウ","シルバンナ","シーシー","ジェイソン","ジミー","ジュリアン","ジョイ","セイバー","セシリオン","セリナ","ソラ","ゾン","チップ","ティグラル","ディアス","ディガー","ディスラー","デームス","ナタリア","ナナ","ニュート","ノヴァリア","ノーラン","ハカート","ハナビ","ハリス","ハーリー","バターン","バラッツ","バルモンド","バレンティナ","パキート","ヒララ","ヒルダ","ヒロス","ビアトリクス","ファニー","ファラミス","ファーサ","フォヴィウス","フランコ","フレイヤ","フレッドリン","フローラ","ブルーノ","ブロディ","ベイン","ベラ","ベレリック","ボボル&クバ","マイシータール","マイヤ","マチルダ","マーシャ","マーティス","ミノタウル","メタルヘッド","メリッサ","モスコブ","ライラ","ラズリー","ラファエル","ラプラプ","ランスロット","リリア","リン","ルビー","ルーカス","レオモルド","ロイン","ロジャー","ローイー","ヴァリル","ヴェル","半蔵","嫦娥","子龍","寅（イン）","悟空","星夢","燭心","玄覇","琥珀","粛遊","隼","イクシア"];
+const ALL_HEROES=["アウルス","アテラス","アモン","アリス","アルカード","アルゴス","アルダス","アルファ","アンジェラ","アーロット","イスンシン","イヴ","イーディス","ウラノス","エウドラ","エスタス","エスメラルダ","エックス","エレシル","オデット","オーロラ","カグラ","カチャ","カティタ","カリナ","カレード","カーミラ","ガイ","ガトートカチャ","ガレック","キャリー","クッフラー","クラウド","クリント","グィネヴィア","グルー","グレンジャー","グールド","ゴセン","サイクロプス","サナ","ザスク","ザビエル","シュウ","シルバンナ","シーシー","ジェイソン","ジミー","ジュリアン","ジョイ","セイバー","セシリオン","セリナ","ソラ","ゾン","チップ","ティグラル","ディアス","ディガー","ディスラー","デームス","ナタリア","ナナ","ニュート","ノヴァリア","ノーラン","ハカート","ハナビ","ハリス","ハーリー","バターン","バラッツ","バルモンド","バレンティナ","パキート","ヒララ","ヒルダ","ヒロス","ビアトリクス","ファニー","ファラミス","ファーサ","フォヴィウス","フランコ","フレイヤ","フレッドリン","フローラ","ブルーノ","ブロディ","ベイン","ベラ","ベレリック","ボボル&クバ","マイシータール","マイヤ","マチルダ","マーシャ","マーティス","ミノタウル","メタルヘッド","メリッサ","モスコブ","ライラ","ラズリー","ラファエル","ラプラプ","ランスロット","リリア","リン","ルビー","ルーカス","レオモルド","ロイン","ロジャー","ローイー","ヴァリル","ヴェル","半蔵","嫦娥","子龍","寅（イン）","悟空","星夢","燭心","玄覇","琥珀","粛遊","隼","則天","イクシア"];
 
-ROLES.forEach(r=>{r.heroes=[...new Set(r.heroes)].sort();});
+LANES.forEach(r=>{r.heroes=[...new Set(r.heroes)];});
 const selected={};
-ROLES.forEach(r=>{selected[r.id]=new Set();});
+LANES.forEach(r=>{selected[r.id]=new Set();});
 
-// 練習中: {roleId -> Set<hero>}
-const PRACTICE_ROLES=[
-  {id:"exp",label:"EXP"},
-  {id:"mid",label:"MID"},
-  {id:"jg",label:"JG"},
-  {id:"roam",label:"ROAM"},
-  {id:"gold",label:"GOLD"}
+const PRACTICE_LANES=[
+  {id:"exp",label:"EXP"},{id:"mid",label:"MID"},{id:"jg",label:"JG"},
+  {id:"roam",label:"ROAM"},{id:"gold",label:"GOLD"}
 ];
 const practiceSelected={};
-PRACTICE_ROLES.forEach(r=>{practiceSelected[r.id]=new Set();});
+PRACTICE_LANES.forEach(r=>{practiceSelected[r.id]=new Set();});
 let activePracticeRole=null;
 
-const YOMI={"子龍":"しりゅう","隼":"はやぶさ","悟空":"ごくう","嫦娥":"じょうが","星夢":"せいむ","半蔵":"はんぞう","玄覇":"げんは","琥珀":"こはく","粛遊":"すよう","燭心":"しょくしん","寅（イン）":"とらいん","ボボル&クバ":"ぼぼるくば"};
+const YOMI={"子龍":"しりゅう","隼":"はやぶさ","悟空":"ごくう","嫦娥":"じょうが","星夢":"せいむ","半蔵":"はんぞう","玄覇":"げんは","琥珀":"こはく","粛遊":"すよう","燭心":"しょくしん","寅（イン）":"とらいん","ボボル&クバ":"ぼぼるくば","則天":"そくてん"};
 function toHira(s){return s.replace(/[\u30A1-\u30F6]/g,c=>String.fromCharCode(c.charCodeAt(0)-0x60));}
 function toKata(s){return s.replace(/[\u3041-\u3096]/g,c=>String.fromCharCode(c.charCodeAt(0)+0x60));}
 function matchHero(hero,q){
@@ -186,104 +171,96 @@ function matchHero(hero,q){
 }
 
 // ── 得意ヒーロー ──
-function buildRoles(){
+function buildLanes(){
   const grid=document.getElementById('rolesGrid');
-  ROLES.forEach(role=>{
+  LANES.forEach(lane=>{
     const panel=document.createElement('div');
     panel.className='role-panel';
     panel.innerHTML=`
       <div class="role-header">
-        <span class="role-dot d-${role.id}"></span>
-        <span class="role-name c-${role.id}">${role.emoji} ${role.label}</span>
-        ${role.searchAll ? '' : '<span class="role-count" id="count-'+role.id+'">0 / '+role.heroes.length+'</span>'}
+        <span class="role-dot d-${lane.id}"></span>
+        <span class="role-name c-${lane.id}">${lane.emoji} ${lane.label}</span>
+        <span class="role-count" id="count-${lane.id}">0 / ${lane.heroes.length}</span>
       </div>
       <div class="role-search">
-        <input type="text" id="search-${role.id}" placeholder="ヒーローを検索…" oninput="onRoleSearch('${role.id}',this.value)">
+        <input type="text" id="search-${lane.id}" placeholder="ヒーローを検索…" oninput="onLaneSearch('${lane.id}',this.value)">
       </div>
-      <div class="hero-list" id="list-${role.id}"></div>`;
+      <div class="hero-list" id="list-${lane.id}"></div>`;
     grid.appendChild(panel);
-    const list=panel.querySelector(`#list-${role.id}`);
-    role.heroes.forEach(hero=>list.appendChild(makeChip(hero,role.id,false)));
+    const list=panel.querySelector(`#list-${lane.id}`);
+    lane.heroes.forEach(hero=>list.appendChild(makeChip(hero,lane.id,false)));
   });
 }
 
-function makeChip(hero,roleId,isExtra){
+function makeChip(hero,laneId,isExtra){
   const chip=document.createElement('span');
   chip.className='hero-chip'+(isExtra?' extra-chip':'');
   chip.dataset.hero=hero;
-  if(selected[roleId]&&selected[roleId].has(hero))chip.classList.add('selected');
+  if(selected[laneId]&&selected[laneId].has(hero))chip.classList.add('selected');
   chip.textContent=hero;
   chip.onclick=()=>{
-    toggleHero(roleId,hero,chip);
-    const si=document.getElementById(`search-${roleId}`);
-    if(si&&si.value){si.value='';clearSearchResults(roleId);filterHeroes(roleId,'');}
+    toggleHero(laneId,hero,chip);
+    const si=document.getElementById(`search-${laneId}`);
+    if(si&&si.value){si.value='';clearExtraChips(laneId);filterHeroes(laneId,'');}
   };
   return chip;
 }
 
-function onRoleSearch(roleId,value){
-  if(!value)clearSearchResults(roleId);
-  filterHeroes(roleId,value);
+function onLaneSearch(laneId,value){
+  if(!value)clearExtraChips(laneId);
+  filterHeroes(laneId,value);
 }
 
-function filterHeroes(roleId,query){
-  const role=ROLES.find(r=>r.id===roleId);
-  const list=document.getElementById(`list-${roleId}`);
+function filterHeroes(laneId,query){
+  const list=document.getElementById(`list-${laneId}`);
   if(!query){list.querySelectorAll('.hero-chip').forEach(c=>c.classList.remove('hidden'));return;}
   const q=query.toLowerCase();
-  if(role&&role.searchAll){
-    const shown=new Set([...list.querySelectorAll('.hero-chip')].map(c=>c.dataset.hero));
-    list.querySelectorAll('.hero-chip').forEach(chip=>chip.classList.toggle('hidden',!matchHero(chip.dataset.hero,q)));
-    ALL_HEROES.forEach(hero=>{
-      if(matchHero(hero,q)&&!shown.has(hero)){
-        list.appendChild(makeChip(hero,roleId,true));
-        shown.add(hero);
-      }
-    });
-  } else {
-    list.querySelectorAll('.hero-chip').forEach(chip=>chip.classList.toggle('hidden',!matchHero(chip.dataset.hero,q)));
-  }
+  const shown=new Set([...list.querySelectorAll('.hero-chip')].map(c=>c.dataset.hero));
+  list.querySelectorAll('.hero-chip').forEach(chip=>chip.classList.toggle('hidden',!matchHero(chip.dataset.hero,q)));
+  ALL_HEROES.forEach(hero=>{
+    if(matchHero(hero,q)&&!shown.has(hero)){
+      list.appendChild(makeChip(hero,laneId,true));
+      shown.add(hero);
+    }
+  });
 }
 
-function clearSearchResults(roleId){
-  document.querySelectorAll(`#list-${roleId} .extra-chip`).forEach(c=>c.remove());
+function clearExtraChips(laneId){
+  document.querySelectorAll(`#list-${laneId} .extra-chip`).forEach(c=>c.remove());
 }
 
-function toggleHero(roleId,hero,chip){
-  if(selected[roleId].has(hero)){selected[roleId].delete(hero);chip.classList.remove('selected');}
-  else{selected[roleId].add(hero);chip.classList.add('selected');}
-  const _r=ROLES.find(r=>r.id===roleId);if(!_r.searchAll){const _el=document.getElementById(`count-${roleId}`);if(_el)_el.textContent=`${selected[roleId].size} / ${_r.heroes.length}`;}
+function toggleHero(laneId,hero,chip){
+  if(selected[laneId].has(hero)){selected[laneId].delete(hero);chip.classList.remove('selected');}
+  else{selected[laneId].add(hero);chip.classList.add('selected');}
+  const lane=LANES.find(r=>r.id===laneId);
+  document.getElementById(`count-${laneId}`).textContent=`${selected[laneId].size} / ${lane.heroes.length}`;
   updatePreview();
 }
 
 // ── 練習中 ──
 function buildPractice(){
-  // ロールボタン
   const btns=document.getElementById('practiceRoleBtns');
-  PRACTICE_ROLES.forEach(r=>{
+  PRACTICE_LANES.forEach(r=>{
     const btn=document.createElement('button');
-    btn.className='role-btn';
+    btn.className='p-role-btn';
     btn.textContent=r.label;
     btn.id=`pbtn-${r.id}`;
-    btn.onclick=()=>selectPracticeRole(r.id);
+    btn.onclick=()=>{
+      activePracticeRole=r.id;
+      document.querySelectorAll('.p-role-btn').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('practiceSearch').value='';
+      document.getElementById('practiceResults').innerHTML='';
+    };
     btns.appendChild(btn);
   });
   renderPracticeRoleList();
 }
 
-function selectPracticeRole(id){
-  activePracticeRole=id;
-  document.querySelectorAll('.role-btn').forEach(b=>b.classList.remove('active'));
-  document.getElementById(`pbtn-${id}`).classList.add('active');
-  // 検索ボックスをクリア
-  document.getElementById('practiceSearch').value='';
-  document.getElementById('practiceResults').innerHTML='';
-}
-
 function onPracticeSearch(value){
   const results=document.getElementById('practiceResults');
   results.innerHTML='';
-  if(!value.trim()||!activePracticeRole) return;
+  if(!value.trim()||!activePracticeRole)return;
   const q=value.toLowerCase();
   ALL_HEROES.filter(h=>matchHero(h,q)).slice(0,40).forEach(hero=>{
     const chip=document.createElement('span');
@@ -300,13 +277,8 @@ function onPracticeSearch(value){
 }
 
 function togglePracticeHero(roleId,hero,chip){
-  if(practiceSelected[roleId].has(hero)){
-    practiceSelected[roleId].delete(hero);
-    chip.classList.remove('selected');
-  } else {
-    practiceSelected[roleId].add(hero);
-    chip.classList.add('selected');
-  }
+  if(practiceSelected[roleId].has(hero)){practiceSelected[roleId].delete(hero);chip.classList.remove('selected');}
+  else{practiceSelected[roleId].add(hero);chip.classList.add('selected');}
   renderPracticeRoleList();
   updatePreview();
 }
@@ -314,18 +286,16 @@ function togglePracticeHero(roleId,hero,chip){
 function renderPracticeRoleList(){
   const list=document.getElementById('practiceRoleList');
   list.innerHTML='';
-  PRACTICE_ROLES.forEach(r=>{
+  PRACTICE_LANES.forEach(r=>{
     const heroes=[...practiceSelected[r.id]];
     const row=document.createElement('div');
     row.className='practice-role-row';
-    // ロールラベル
     const lbl=document.createElement('span');
-    lbl.className='role-btn';
+    lbl.className='p-role-btn';
     lbl.style.cursor='default';
     lbl.textContent=r.label;
-    if(heroes.length>0){lbl.style.borderColor='var(--role-practice)';lbl.style.color='var(--role-practice)';}
+    if(heroes.length>0){lbl.style.borderColor='var(--lane-practice)';lbl.style.color='var(--lane-practice)';}
     row.appendChild(lbl);
-    // ヒーローチップ
     const chips=document.createElement('div');
     chips.className='role-hero-chips';
     heroes.forEach(hero=>{
@@ -348,17 +318,17 @@ function renderPracticeRoleList(){
 }
 
 // ── プレビュー＆投稿 ──
-const ROLE_LABELS={tank:"🛡️ Tank",fighter:"⚔️ Fighter",assassin:"🗡️ Assassin",mage:"🔮 Mage",marksman:"🏹 Marksman",support:"💚 Support",jungler:"🌿 Jungler",roam:"🌀 Roam"};
+const LANE_LABELS={roam:"🌀 Roam",exp:"⚔️ Exp",jg:"🌿 JG",mid:"🔮 Mid",gold:"🏹 Gold"};
 
 function buildMessage(){
   const name=document.getElementById('playerName').value.trim();
   const heroLines=[];
-  ROLES.forEach(role=>{
-    if(selected[role.id].size>0)heroLines.push(`${ROLE_LABELS[role.id]}: ${[...selected[role.id]].join(', ')}`);
+  LANES.forEach(lane=>{
+    if(selected[lane.id].size>0)heroLines.push(`${LANE_LABELS[lane.id]}\n　${[...selected[lane.id]].join(', ')}`);
   });
   const practiceLines=[];
-  PRACTICE_ROLES.forEach(r=>{
-    if(practiceSelected[r.id].size>0)practiceLines.push(`🌱 ${r.label}: ${[...practiceSelected[r.id]].join(', ')}`);
+  PRACTICE_LANES.forEach(r=>{
+    if(practiceSelected[r.id].size>0)practiceLines.push(`🌱 ${r.label}\n　${[...practiceSelected[r.id]].join(', ')}`);
   });
   if(heroLines.length===0&&practiceLines.length===0)return null;
   const lines=[];
@@ -395,17 +365,17 @@ async function postToDiscord(){
 }
 
 function clearAll(){
-  ROLES.forEach(role=>{
-    selected[role.id].clear();
-    document.querySelectorAll(`#list-${role.id} .hero-chip`).forEach(c=>c.classList.remove('selected'));
-    document.getElementById(`count-${role.id}`).textContent=`0 / ${role.heroes.length}`;
-    const si=document.getElementById(`search-${role.id}`);
+  LANES.forEach(lane=>{
+    selected[lane.id].clear();
+    document.querySelectorAll(`#list-${lane.id} .hero-chip`).forEach(c=>c.classList.remove('selected'));
+    document.getElementById(`count-${lane.id}`).textContent=`0 / ${lane.heroes.length}`;
+    const si=document.getElementById(`search-${lane.id}`);
     if(si)si.value='';
-    clearSearchResults(role.id);
+    clearExtraChips(lane.id);
   });
-  PRACTICE_ROLES.forEach(r=>practiceSelected[r.id].clear());
+  PRACTICE_LANES.forEach(r=>practiceSelected[r.id].clear());
   activePracticeRole=null;
-  document.querySelectorAll('.role-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.p-role-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('practiceSearch').value='';
   document.getElementById('practiceResults').innerHTML='';
   renderPracticeRoleList();
@@ -419,7 +389,7 @@ function showToast(msg,type='success'){
   setTimeout(()=>{t.className=type;},3000);
 }
 
-buildRoles();
+buildLanes();
 buildPractice();
 updatePreview();
 </script>
